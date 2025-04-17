@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Device Verification</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Rubik', sans-serif;
+    }
+    body {
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .card {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 320px;
+    }
+    .card h1 {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+    .card p {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+    .btn {
+      background: #4facfe;
+      color: white;
+      padding: 0.8rem 1.2rem;
+      border: none;
+      border-radius: 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #00c6ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Device Verification</h1>
+    <p>Click below to verify your device and claim your reward.</p>
+    <button class="btn" onclick="verify()">Verify Device</button>
+  </div>
+
+  <script>
+    window.Telegram.WebApp.ready();
+
+    function generateDeviceId() {
+      const parts = [
+        navigator.userAgent,
+        navigator.language,
+        screen.width + "x" + screen.height,
+        new Date().getTimezoneOffset()
+      ];
+      return btoa(parts.join('|'));
+    }
+
+    function verify() {
+      const deviceId = generateDeviceId();
+      Telegram.WebApp.sendData(deviceId); // send to bot
+      alert("Device Verified!\nID: " + deviceId);
+      Telegram.WebApp.close(); // optional: close WebApp after verifying
+    }
+  </script>
+</body>
+</html>
